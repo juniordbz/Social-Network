@@ -1,9 +1,9 @@
 import { format , formatDistanceToNow } from 'date-fns';
-import ptBr from 'date-fns/locale/pt-BR'
+import ptBR from 'date-fns/locale/pt-BR';
 import { Avatar } from './Avatar';
 import { Comment } from './Comentario';
 import styles from './Post.module.css';
-import { ChangeEvent, FormEvent, InvalidEvent, useState } from 'react';
+import { ChangeEvent, FormEvent,  InvalidEvent, useState } from 'react';
 
 // author: {avtar_url: '', name: "", rule: ""};
 // publishedAt: date;
@@ -32,18 +32,30 @@ interface PostProps{
   post: PostType;
 }
 
+interface CommentProps{
+  id: string
+  content: string
+}
+
+
 export function Post ({ post }: PostProps){
 
-  const [comments, SetComments] = useState([
-    'Post muito bacana!'
-  ]) 
+  const [comments, setComments] = useState<CommentProps[]>([])
+  
 
   const [newCommentText, setNewCommentText] = useState('')
 
   function handleCreateNewComment(event: FormEvent){
     event.preventDefault();
 
-    SetComments([...comments, newCommentText])
+    const newDate = new Date();
+
+      const newComment = {
+          id: format(newDate, 'yyyyMMddHHmmss'),
+          content: newCommentText,  
+      }
+
+    setComments((comment)=> [...comment, newComment]);
     setNewCommentText('');
   }
 
@@ -54,11 +66,11 @@ export function Post ({ post }: PostProps){
   }
 
   const publishedDateFormat = format(post.publishedAt, "dd 'de' LLLL 'às' HH:mm'h'", {
-    locale: ptBr,
+    locale: ptBR,
   })
 
   const publishedDateRelativeNow = formatDistanceToNow(post.publishedAt, {
-    locale: ptBr,
+    locale: ptBR,
     addSuffix: true,
   })
 
@@ -67,14 +79,14 @@ export function Post ({ post }: PostProps){
     
   }
 
-  function deleteComment(commentToDelete:string){
-    const commentWithoutDeleteOne = comments.filter(comment =>{
-      return( comment !== commentToDelete
+  function deleteComment(deleteById:string){
+   
 
-      )
-    })
+    const deleteSelectComment = comments.filter((comment) => comment.id !== deleteById)
+    if (!deleteSelectComment) return comments
 
-    SetComments(commentWithoutDeleteOne);  
+   setComments(deleteSelectComment)
+  
   }
 
   const isNewCommentEmpty = newCommentText.length === 0;
@@ -134,8 +146,9 @@ export function Post ({ post }: PostProps){
         {comments.map(comment =>{
           return(
             <Comment
-              key={comment}
-              content={comment}
+              key={comment.id}
+              commentId={comment.id}
+              content={comment.content}
               onDeleteComment={deleteComment}
             />
           )

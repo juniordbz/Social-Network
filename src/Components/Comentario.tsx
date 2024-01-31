@@ -3,17 +3,19 @@ import { Avatar } from './Avatar';
 import styles from './Comentario.module.css';
 import { Trash, ThumbsUp } from 'phosphor-react';
 
+
 interface CommentProps{
+  commentId: string
   content: string;
-  onDeleteComment: (comment: string) => void;
+  onDeleteComment: (id: string) => void;
 }
 
-export function Comment({content, onDeleteComment}: CommentProps){
+export function Comment({content, onDeleteComment, commentId}: CommentProps){
   
 const [likeCount, setLikeCount] = useState(0);
 
   function handleDeleteComment(){
-    onDeleteComment(content)
+    onDeleteComment(commentId)
   }
 
   function handleLikeComment(){
@@ -36,7 +38,7 @@ const [likeCount, setLikeCount] = useState(0);
               <time title='27/11/2023' dateTime='2023-11-27 07:58:00'>Cerca de 1 hora atrás</time>
             </div>
 
-            <button onClick={handleDeleteComment} title='Deletar comentário'>
+              <button onClick={handleDeleteComment} title='Deletar comentário'>
               <Trash
               size={24}
               />
