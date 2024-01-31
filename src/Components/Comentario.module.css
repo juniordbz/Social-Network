@@ -55,6 +55,7 @@
 .commentContent p{
   margin-top: 1rem;
   color: var(--gray-300);
+  white-space: pre-line;
 }
 
 .commentBox footer{

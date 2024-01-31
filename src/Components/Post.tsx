@@ -3,7 +3,7 @@ import ptBR from 'date-fns/locale/pt-BR';
 import { Avatar } from './Avatar';
 import { Comment } from './Comentario';
 import styles from './Post.module.css';
-import { ChangeEvent, FormEvent,  InvalidEvent, useState } from 'react';
+import { ChangeEvent, FormEvent,  InvalidEvent, KeyboardEvent, useState } from 'react';
 
 // author: {avtar_url: '', name: "", rule: ""};
 // publishedAt: date;
@@ -48,13 +48,12 @@ export function Post ({ post }: PostProps){
   function handleCreateNewComment(event: FormEvent){
     event.preventDefault();
 
-    const newDate = new Date();
-
+      // const randomId = new Date() + crypto.randomUUID()
       const newComment = {
-          id: format(newDate, 'yyyyMMddHHmmss'),
+          id: crypto.randomUUID(),
           content: newCommentText,  
       }
-
+   
     setComments((comment)=> [...comment, newComment]);
     setNewCommentText('');
   }
@@ -80,13 +79,19 @@ export function Post ({ post }: PostProps){
   }
 
   function deleteComment(deleteById:string){
-   
 
     const deleteSelectComment = comments.filter((comment) => comment.id !== deleteById)
-    if (!deleteSelectComment) return comments
-
-   setComments(deleteSelectComment)
+ 
+    setComments(deleteSelectComment)
   
+  }
+
+
+  function handleEnterKey (event: KeyboardEvent<HTMLTextAreaElement>) {
+    if (event.key === 'Enter' && !event.shiftKey ) {
+      event.preventDefault();
+      handleCreateNewComment(event);
+    }
   }
 
   const isNewCommentEmpty = newCommentText.length === 0;
@@ -132,6 +137,7 @@ export function Post ({ post }: PostProps){
           value={newCommentText}
           onChange={handleNewCommentChange}
           onInvalid={randleNewCommentInvalid}
+          onKeyDown={handleEnterKey}
           required
         />
         <footer>

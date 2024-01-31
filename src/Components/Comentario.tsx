@@ -43,7 +43,6 @@ const [likeCount, setLikeCount] = useState(0);
               size={24}
               />
             </button>
-
           </header>
 
           <p> {content} </p>
@@ -52,7 +51,6 @@ const [likeCount, setLikeCount] = useState(0);
         <footer>
           <button onClick={handleLikeComment}>
             <ThumbsUp/>
-            {}
             Aplaudir <span>{likeCount}</span>
           </button>
         </footer>
