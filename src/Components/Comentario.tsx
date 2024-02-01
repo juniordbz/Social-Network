@@ -2,20 +2,20 @@ import { useState } from 'react';
 import { Avatar } from './Avatar';
 import styles from './Comentario.module.css';
 import { Trash, ThumbsUp } from 'phosphor-react';
+import { CommentProps } from './Post';
 
 
-interface CommentProps{
-  commentId: string
-  content: string;
+
+interface Comments extends CommentProps{
   onDeleteComment: (id: string) => void;
 }
 
-export function Comment({content, onDeleteComment, commentId}: CommentProps){
+export function Comment({content, onDeleteComment, id}: Comments){
   
 const [likeCount, setLikeCount] = useState(0);
 
   function handleDeleteComment(){
-    onDeleteComment(commentId)
+    onDeleteComment(id)
   }
 
   function handleLikeComment(){

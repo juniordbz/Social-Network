@@ -32,7 +32,7 @@ interface PostProps{
   post: PostType;
 }
 
-interface CommentProps{
+export interface CommentProps{
   id: string
   content: string
 }
@@ -153,7 +153,7 @@ export function Post ({ post }: PostProps){
           return(
             <Comment
               key={comment.id}
-              commentId={comment.id}
+              id={comment.id}
               content={comment.content}
               onDeleteComment={deleteComment}
             />
